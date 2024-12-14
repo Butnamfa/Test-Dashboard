@@ -1,0 +1,11 @@
+[theme]
+base="light"  # หรือ "dark" ถ้าต้องการธีมสีเข้ม
+
+[server]
+headless=true
+
+[browser]
+gatherUsageStats=false
+enableXsrfProtection=false
+serverAddress="0.0.0.0"  # ทำให้ใช้งานบนเครือข่ายได้
+serverPort=8501  # กำหนดพอร์ตถ้าจำเป็น

@@ -1,15 +1,25 @@
-import mysql.connector
+import pymysql  
 import pandas as pd
 
 def get_connection():
-    """เชื่อมต่อกับฐานข้อมูล MySQL"""
-    connection = mysql.connector.connect(
-        host="localhost",     
-        user="root",           
-        password="",           
-        database="restaurant"  
+    """เชื่อมต่อกับฐานข้อมูล MySQL บน Railway"""
+    connection = pymysql.connect(
+        host="autorack.proxy.rlwy.net",
+        port=25949,
+        user="root",
+        password="TFjOleWgujKggEAEMLPMgaoUJLxDyJWx",
+        database="railway",
+        cursorclass=pymysql.cursors.DictCursor
     )
     return connection
+
+# ทดสอบการเชื่อมต่อ
+try:
+    connection = get_connection()
+    print("เชื่อมต่อสำเร็จ")
+    connection.close()
+except Exception as e:
+    print(f"เกิดข้อผิดพลาด: {e}")
 
 def get_data_from_db():
     """ดึงข้อมูลจากฐานข้อมูล"""
@@ -28,10 +38,9 @@ def get_data_from_db():
     connection.close()
 
     # แปลงข้อมูลเป็น DataFrame
-    df = pd.DataFrame(result, columns=[
-        "Menu", "Order Time", "Serve Time", "Price", "Category", 
-        "Kitchen Staff", "Drinks Staff", "Day Of Week"
-    ])
+    df = pd.DataFrame(result)
+    df.columns = ["Menu", "Order Time", "Serve Time", "Price", "Category", 
+                  "Kitchen Staff", "Drinks Staff", "Day Of Week"]
 
     # แปลงเวลาเป็น datetime
     df['Order Time'] = pd.to_datetime(df['Order Time'], errors='coerce')
